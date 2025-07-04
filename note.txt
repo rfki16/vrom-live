@@ -1,0 +1,49 @@
+1. Instalasi Laravel
+2. Instalasi Jetstream
+3. Membuat ERD
+4. Membuat migration
+
+menambah field
+php artisan make:migration add_roles_and_phone_field_to_users_table --table="users"
+
+kembali
+php artisan migrate:rollback --step=1
+
+5. Membuat controller
+jadi di laravel itu nanti ada skema
+  1.) folder controller : controller untuk memanggil views
+  2.) folder views : isi dari tampilan web
+  3.) folder routes (web.php) : memanggil fungsi controller
+
+gunakan as untuk memudahkan penamaan :
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+artinya -> memanggil file controller dengan as admin 
+
+untuk controller yang tidak memiliki resource bisa memanggilnya seperti Instalasi
+Route::get('/dashboard',[AdminDashboardController::class,'index'])->name('dashboard');
+artinya -> maksud index itu kita mau manggil method yang mana di DashboardController
+
+jika ingin memanggil controller yang memiliki resource bisa seperti ini
+Route::resource('brands', AdminBrandController::class);
+
+=================================================================================
+
+membuat middleware dengan 
+php artisan make:middleware IsAdmin
+
+lalu tambahkan kode berikut
+if($request->user()->roles == 'ADMIN'){
+    return $next($request);
+}
+return redirect()->route('front.index');
+
+
+untuk mendaftarkan middleware bisa ke app > http > kernel.php
+
+lalu di web app tinggal panggil verified, admin
+
+=================================================================================
+1. buat brandrequest terlebih dahulu untuk menambahkan validasi auth dan form
+2. pada navigation-menu.blade.php jika ingin menambahkan page baru bisa copy dashboard di nav dan ubah admin.brands.index
+
+
